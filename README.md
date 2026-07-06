@@ -10,7 +10,7 @@ A continuación se muestran los principales resultados obtenidos durante el proc
 
 |     Tabla normalizada (3FN)      |    Modelo ER (Chen)     | Modelo Relacional (Crow's Foot) |
 | :------------------------------: | :---------------------: | :-----------------------------: |
-| ![](images/normalized-table.png) | ![](images/) |    ![](images/)    |
+| ![](images/normalized-table.png) | ![](images/chen-er.png) |    ![](images/crowsfoot.png)    |
 
 ---
 
@@ -22,6 +22,8 @@ A continuación se muestran los principales resultados obtenidos durante el proc
 - [Modelo final](#-modelo-final)
 - [Relaciones](#-relaciones-del-modelo)
 - [Claves primarias y foráneas](#-claves-primarias-y-foráneas)
+- [Diagrama ER](#-diagrama-entidad-relación-modelo-de-chen)
+- [Diagrama Crow's Foot](#-diagrama-de-esquema-de-base-de-datos-patas-de-gallo--crows-foot)
 
 ---
 
@@ -75,6 +77,10 @@ Antes de comenzar el proceso de normalización, se identificaron los siguientes 
 > 📄 **Normalización paso a paso (1FN → 2FN → 3FN):**
 > [Ver online en Google Sheets](https://docs.google.com/spreadsheets/d/1CXWS7D80rAA8V16_Yx3W6oa7oPQObVGM/edit?usp=sharing) · [Descargar .xlsx](docs/database-normalization.xlsx)
 
+**Resultado de la normalización (3FN):**
+
+![Tabla normalizada en 3FN](images/normalized-table.png)
+
 ---
 
 ## 🧩 Modelo final
@@ -118,5 +124,52 @@ Una vez normalizada la base de datos, las relaciones entre las entidades quedan 
 | `classrooms`         | `id_classroom`              | —                   |
 | `courses`            | `id_course`                 | —                   |
 | `classrooms_courses` | `id_classroom`, `id_course` | Ambas               |
+
+---
+
+## 📐 Diagrama Entidad-Relación (Modelo de Chen)
+
+Representa el modelo conceptual, mostrando las entidades principales y cómo se relacionan entre sí. La clave foránea `id_classroom` y la tabla puente `classrooms_courses` no aparecen como columnas ni tablas: se expresan mediante las relaciones (`belongs_to` y `offers`).
+
+![Diagrama ER de Chen](images/chen-er.png)
+
+---
+
+## 🦶 Diagrama de Esquema de Base de Datos (Patas de Gallo / Crow's Foot)
+
+Representa el esquema físico de la base de datos con las cuatro tablas, sus campos, claves y relaciones. La relación N:M aula–curso se resuelve a través de la tabla de unión `classrooms_courses`.
+
+![Diagrama de patas de gallo](images/crowsfoot.png)
+
+Versión Mermaid del mismo diagrama:
+
+```mermaid
+erDiagram
+    students }o--|| classrooms : "belongs to"
+    classrooms ||--o{ classrooms_courses : "offers"
+    courses ||--o{ classrooms_courses : "included in"
+
+    students {
+        int id_student PK
+        varchar first_name
+        varchar last_name
+        varchar id_classroom FK
+    }
+
+    classrooms {
+        varchar id_classroom PK
+        varchar classroom_description
+    }
+
+    courses {
+        int id_course PK
+        varchar course_name
+    }
+
+    classrooms_courses {
+        varchar id_classroom PK "FK"
+        int id_course PK "FK"
+    }
+```
 
 ---
