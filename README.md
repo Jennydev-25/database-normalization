@@ -1,2 +1,5 @@
-# students-classrooms-courses
-Normalización de base de datos: tabla plana a 3FN con diagrama de entidad-relación (de Chen) y diagrama UML (Database Schema - patas de gallo) de la base de datos con sus tablas, campos y relaciones
+# 🎓 Database Normalization (3FN) – Students, Classrooms & Courses
+
+> Ejercicio de normalización de una base de datos relacional desde una tabla no normalizada hasta la Tercera Forma Normal (3FN).
+
+---
