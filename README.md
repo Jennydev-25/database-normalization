@@ -24,6 +24,10 @@ A continuación se muestran los principales resultados obtenidos durante el proc
 - [Claves primarias y foráneas](#-claves-primarias-y-foráneas)
 - [Diagrama ER](#-diagrama-entidad-relación-modelo-de-chen)
 - [Diagrama Crow's Foot](#-diagrama-de-esquema-de-base-de-datos-patas-de-gallo--crows-foot)
+- [Estructura del repositorio](#-estructura-del-repositorio)
+- [Tecnologías](#️-tecnologías)
+- [Recursos](#-recursos)
+- [Autora](#-autora)
 
 ---
 
@@ -76,10 +80,6 @@ Antes de comenzar el proceso de normalización, se identificaron los siguientes 
 
 > 📄 **Normalización paso a paso (1FN → 2FN → 3FN):**
 > [Ver online en Google Sheets](https://docs.google.com/spreadsheets/d/1CXWS7D80rAA8V16_Yx3W6oa7oPQObVGM/edit?usp=sharing) · [Descargar .xlsx](docs/database-normalization.xlsx)
-
-**Resultado de la normalización (3FN):**
-
-![Tabla normalizada en 3FN](images/normalized-table.png)
 
 ---
 
@@ -173,3 +173,46 @@ erDiagram
 ```
 
 ---
+
+## 📁 Estructura del repositorio
+
+```text
+database-normalization/
+├── diagrams/
+│   ├── chen-er.drawio
+│   └── crowsfoot.drawio
+├── docs/
+│   └── database-normalization.xlsx
+├── images/
+│   ├── normalized-table.png
+│   ├── chen-er.png
+│   └── crowsfoot.png
+├── README.md
+└── .gitignore
+```
+
+---
+
+## 🛠️ Tecnologías
+
+- **[Google Sheets](https://workspace.google.com/products/sheets/)** — Utilizado para la normalización de la tabla paso a paso (1FN → 2FN → 3FN) 👉 [Ver hoja](https://docs.google.com/spreadsheets/d/1CXWS7D80rAA8V16_Yx3W6oa7oPQObVGM/edit?usp=sharing)
+- **[diagrams.net (draw.io)](https://www.diagrams.net/)** — Creación del diagrama Entidad-Relación (Modelo Chen) y del diagrama en notación de patas de gallo (Crow's Foot)
+- **[Mermaid](https://mermaid.js.org/)** — Generación de la versión del diagrama ER
+- **[Visual Studio Code](https://code.visualstudio.com/)** — Editor de código empleado para redactar la documentación, editar archivos Markdown y gestionar el proyecto
+- **[Markdown](https://www.markdownguide.org/)** — Lenguaje de marcado ligero utilizado para la documentación y la elaboración del README
+- **[Git](https://git-scm.com/)** / **[GitHub](https://github.com/)** — Sistema de control de versiones y plataforma para el alojamiento del proyecto
+
+---
+
+## 📚 Recursos
+
+- **[diagrams.net](https://app.diagrams.net/)** — Herramienta gratuita para crear diagramas de flujo, UML, ERD y otros esquemas visuales
+- **[Normalización de Bases de Datos (freeCodeCamp)](https://www.freecodecamp.org/news/database-normalization-1nf-2nf-3nf-table-examples/)** — Explicación clara de la Primera, Segunda y Tercera Forma Normal (1NF, 2NF y 3NF) con ejemplos prácticos
+- **[Cómo crear un diagrama de base de datos](https://www.lucidchart.com/pages/es/tutorial-de-diagrama-entidad-relacion)** — Guía paso a paso para diseñar diagramas Entidad-Relación (ERD) y modelar bases de datos
+- **[Mermaid - Entity Relationship Diagrams](https://mermaid.js.org/syntax/entityRelationshipDiagram.html)** — Documentación oficial de Mermaid para crear diagramas Entidad-Relación directamente desde texto mediante sintaxis Markdown
+
+---
+
+## 👩‍💻 Autora
+
+**[Jenny Sánchez Requejo](https://github.com/Jennydev-25)**
