@@ -4,15 +4,36 @@
 
 ---
 
+## 📸 Vista previa
+
+A continuación se muestran los principales resultados obtenidos durante el proceso de normalización.
+
+|     Tabla normalizada (3FN)      |    Modelo ER (Chen)     | Modelo Relacional (Crow's Foot) |
+| :------------------------------: | :---------------------: | :-----------------------------: |
+| ![](images/normalized-table.png) | ![](images/) |    ![](images/)    |
+
+---
+
+## 📑 Índice
+
+- [Descripción](#-descripción)
+- [Tabla original](#️-tabla-original)
+- [Proceso de normalización](#-proceso-de-normalización)
+- [Modelo final](#-modelo-final)
+- [Relaciones](#-relaciones-del-modelo)
+- [Claves primarias y foráneas](#-claves-primarias-y-foráneas)
+
+---
+
 ## 📋 Descripción
 
-El objetivo de este ejercicio es aplicar las tres primeras formas normales (1FN, 2FN y 3FN) a una tabla sin normalizar, eliminando redundancias, dependencias innecesarias y grupos de repetición para obtener un modelo relacional consistente.
+El objetivo de este proyecto es aplicar las tres primeras formas normales (1FN, 2FN y 3FN) a una tabla sin normalizar, eliminando redundancias, dependencias incorrectas y grupos de repetición para obtener un modelo relacional consistente.
 
 Los requisitos principales son:
 
 1. **Normalizar la tabla proporcionada** (hasta la 3FN).
-2. **Realizar un diagrama Entidad-Relación (Chen)** para modelar conceptualmente las entidades y sus relaciones.
-3. **Realizar un diagrama en notación Crow's Foot (patas de gallo)** para representar el esquema relacional resultante.
+2. **Realizar un diagrama ER de Chen** para modelar conceptualmente las entidades y sus relaciones.
+3. **Realizar un diagrama UML (Patas de gallo / Crow's Foot)** para representar el esquema físico de la base de datos con sus tablas, campos y claves.
 
 ---
 
@@ -32,5 +53,70 @@ Partimos de esta tabla que nos indica en el enunciado: _Los lenguajes de program
 |     8      | Pablo Ramírez  |   A102    |      Web Backend      |  Java   | Spring Framework |    SQL     |
 |     9      | Sofía Navarro  |   A101    |     Web Frontend      |  HTML   |       CSS        | JavaScript |
 |     10     |  Tomás Ortega  |   A103    |   Desarrollo Mobile   | Kotlin  |      Swift       |    Dart    |
+
+---
+
+## 🔄 Proceso de normalización
+
+Antes de comenzar el proceso de normalización, se identificaron los siguientes problemas en la tabla original (`sin_normalizar`):
+
+- **Atributos compuestos:** El campo `name_student` contenía el nombre y el apellido juntos en un solo campo (por ejemplo: _"Ana Martínez"_, _"Luis Fernández"_).
+- **Dependencias transitivas:** La descripción del aula (`classroom_description`, como _"Web Frontend"_ o _"Web Backend"_) no dependía de la clave primaria del estudiante, sino del código de la clase (`classroom`), repitiéndose de forma redundante e innecesaria para cada estudiante.
+- **Grupos de repetición:** Existían tres columnas estáticas (`course1`, `course2`, `course3`) para almacenar los cursos de cada estudiante. Esto provocaba rigidez en el diseño, celdas vacías en caso de menos cursos y dificultades para realizar consultas eficientes, violando directamente la Primera Forma Normal (1FN).
+
+### Solución Aplicada
+
+**1FN (Primera Forma Normal)** — Se eliminaron los atributos compuestos dividiendo `name_student` en dos campos atómicos e independientes (`first_name` y `last_name`). Asimismo, para eliminar los grupos de repetición de los cursos (`course1`, `course2`, `course3`), se reestructuró la información de manera que cada curso se convierta en un registro independiente asociado, preparando el terreno para crear la entidad de cursos de forma atómica.
+
+**2FN (Segunda Forma Normal)** — Tras aplicar la 1FN, se separaron las dependencias funcionales de los datos. Dado que los cursos y las aulas poseen dinámicas independientes de la identidad del estudiante, se aislaron las entidades para garantizar que todas las tablas resultantes posean claves primarias simples o compuestas en las que los atributos no clave dependan de la clave completa.
+
+**3FN (Tercera Forma Normal)** — Se eliminó la dependencia transitiva existente trasladando de forma definitiva la relación entre el código del aula y su descripción a una entidad aislada llamada `classrooms`. Con esto se evita la duplicidad masiva de cadenas de texto y redundancia de datos en la tabla de alumnos, garantizando que cada atributo no clave dependa única y exclusivamente de la clave primaria.
+
+> 📄 **Normalización paso a paso (1FN → 2FN → 3FN):**
+> [Ver online en Google Sheets](https://docs.google.com/spreadsheets/d/1CXWS7D80rAA8V16_Yx3W6oa7oPQObVGM/edit?usp=sharing) · [Descargar .xlsx](docs/database-normalization.xlsx)
+
+---
+
+## 🧩 Modelo final
+
+El resultado del proceso de normalización es un modelo relacional compuesto por tres entidades principales y una tabla intermedia de unión para resolver la relación de muchos a muchos (N:M).
+
+1. **`students`**: Almacena la información única e individual de cada estudiante.
+   - `id_student` (PK)
+   - `first_name`
+   - `last_name`
+   - `id_classroom` (FK)
+
+2. **`classrooms`**: Almacena de forma unificada el catálogo de aulas y su especialidad.
+   - `id_classroom` (PK) _(procedente de la columna original `classroom`)_
+   - `classroom_description`
+
+3. **`courses`**: Almacena el catálogo de cursos disponibles.
+   - `id_course` (PK)
+   - `course_name` _(mapea de manera unificada los valores HTML, CSS, JavaScript, Java, Spring Framework, SQL, Kotlin, Swift, Dart)_
+
+4. **`classrooms_courses`**: Tabla de unión (relación puente N:M) necesaria para vincular dinámicamente qué asignaturas se imparten en qué aulas, evitando las columnas repetitivas horizontales del modelo original.
+   - `id_classroom` (PK, FK)
+   - `id_course` (PK, FK)
+
+## 🔗 Relaciones del modelo
+
+Una vez normalizada la base de datos, las relaciones entre las entidades quedan definidas de la siguiente forma:
+
+- Un **aula** puede tener **muchos estudiantes** (1:N).
+- Un **aula** puede impartir **muchos cursos** (N:M).
+- Un **curso** puede impartirse en **varias aulas** (N:M).
+- La relación muchos a muchos entre aulas y cursos se resuelve mediante la tabla de unión `classrooms_courses`.
+
+---
+
+## 🔑 Claves primarias y foráneas
+
+| Tabla                | Clave primaria              | Clave(s) foránea(s) |
+| -------------------- | --------------------------- | ------------------- |
+| `students`           | `id_student`                | `id_classroom`      |
+| `classrooms`         | `id_classroom`              | —                   |
+| `courses`            | `id_course`                 | —                   |
+| `classrooms_courses` | `id_classroom`, `id_course` | Ambas               |
 
 ---
