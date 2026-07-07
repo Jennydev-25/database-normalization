@@ -81,6 +81,10 @@ Antes de comenzar el proceso de normalización, se identificaron los siguientes 
 > 📄 **Normalización paso a paso (1FN → 2FN → 3FN):**
 > [Ver online en Google Sheets](https://docs.google.com/spreadsheets/d/1CXWS7D80rAA8V16_Yx3W6oa7oPQObVGM/edit?usp=sharing) · [Descargar .xlsx](docs/database-normalization.xlsx)
 
+**Resultado de la normalización (3FN):**
+
+![Tabla normalizada en 3FN](images/normalized-table.png)
+
 ---
 
 ## 🧩 Modelo final
